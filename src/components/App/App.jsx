@@ -2,52 +2,61 @@ import { FeedbackHeading } from 'components/FeedbackHeading/FeedbackHeading';
 import { Container } from './App.styled';
 import { FeedbackOptions } from 'components/FeedbackOptions/FeedbackOptions';
 import { FeedbackStats } from 'components/FeedbackStats/FeedbackStats';
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 
-class App extends Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+const App = () => {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const handleClick = option => {
+    switch (option) {
+      case 'good':
+        setGood(good + 1);
+        break;
+      case 'neutral':
+        setNeutral(neutral + 1);
+        break;
+      case 'bad':
+        setBad(bad + 1);
+        break;
+      default:
+        break;
+    }
   };
 
-  handleClick = option => {
-    this.setState(prevState => {
-      return {
-        [option]: prevState[option] + 1,
-      };
-    });
+  const countTotalFeedback = () => {
+    return good + neutral + bad;
   };
 
-  countTotalFeedback = obj => {
-    return Object.values(obj).reduce((acc, elem) => acc + elem, 0);
+  const countPositiveFeedbackPercentage = () => {
+    return Math.round((good / countTotalFeedback()) * 100);
   };
 
-  countPositiveFeedbackPercentage = obj => {
-    return Math.round((obj.good / this.countTotalFeedback(obj)) * 100);
-  };
+  useEffect(() => {
+    countTotalFeedback();
+    countPositiveFeedbackPercentage();
+  });
 
-  render() {
-    return (
-      <Container>
-        <FeedbackOptions
-          text="Please leave feedback:"
-          options={Object.keys(this.state)}
-          onLeaveFeedback={this.handleClick}
+  return (
+    <Container>
+      <FeedbackOptions
+        text="Please leave feedback:"
+        options={['good', 'bad', 'neutral']}
+        onLeaveFeedback={handleClick}
+      />
+      {countTotalFeedback() > 0 ? (
+        <FeedbackStats
+          text="Statistics:"
+          obj={{ good: good, bad: bad, neutral: neutral }}
+          totalFeedback={countTotalFeedback}
+          positivePercentage={countPositiveFeedbackPercentage}
         />
-        {this.countTotalFeedback(this.state) > 0 ? (
-          <FeedbackStats
-            text="Statistics:"
-            obj={this.state}
-            totalFeedback={this.countTotalFeedback}
-            positivePercentage={this.countPositiveFeedbackPercentage}
-          />
-        ) : (
-          <FeedbackHeading size={'large'} text={'There is no feedback'} />
-        )}
-      </Container>
-    );
-  }
-}
+      ) : (
+        <FeedbackHeading size={'large'} text={'There is no feedback'} />
+      )}
+    </Container>
+  );
+};
 
 export default App;
