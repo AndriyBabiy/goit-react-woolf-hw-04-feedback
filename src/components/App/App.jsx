@@ -2,7 +2,7 @@ import { FeedbackHeading } from 'components/FeedbackHeading/FeedbackHeading';
 import { Container } from './App.styled';
 import { FeedbackOptions } from 'components/FeedbackOptions/FeedbackOptions';
 import { FeedbackStats } from 'components/FeedbackStats/FeedbackStats';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const App = () => {
   const [good, setGood] = useState(0);
