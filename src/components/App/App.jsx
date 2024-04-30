@@ -33,11 +33,6 @@ const App = () => {
     return Math.round((good / countTotalFeedback()) * 100);
   };
 
-  useEffect(() => {
-    countTotalFeedback();
-    countPositiveFeedbackPercentage();
-  });
-
   return (
     <Container>
       <FeedbackOptions
@@ -49,8 +44,8 @@ const App = () => {
         <FeedbackStats
           text="Statistics:"
           obj={{ good: good, bad: bad, neutral: neutral }}
-          totalFeedback={countTotalFeedback}
-          positivePercentage={countPositiveFeedbackPercentage}
+          totalFeedback={countTotalFeedback()}
+          positivePercentage={countPositiveFeedbackPercentage()}
         />
       ) : (
         <FeedbackHeading size={'large'} text={'There is no feedback'} />

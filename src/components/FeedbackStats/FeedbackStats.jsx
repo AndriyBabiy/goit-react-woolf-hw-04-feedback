@@ -18,12 +18,12 @@ export const FeedbackStats = ({
       <FeedbackStatsItem
         key={'total'}
         heading={'total'}
-        value={totalFeedback(obj)}
+        value={totalFeedback}
       />
       <FeedbackStatsItem
         key={'positivePercentage'}
         heading={'Positive feedback'}
-        value={`${positivePercentage(obj)}%`}
+        value={`${positivePercentage}%`}
       />
     </>
   );
